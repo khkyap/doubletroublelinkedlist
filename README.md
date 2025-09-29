@@ -1,34 +1,29 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=20675107)
 # DOUBLE LINKED LIST
 
-Please use the starter code, and build on it, as this will allow me to test your code easily.
+Look at the reading pp 36 - 37 in the "Advanced Computer Science" text.
 
-(If you are doing something above and beyond the requirements, like building a generic LinkedList (LinkedList) inistead of an IntegerLinkedList, then you may need to make some changes - just indicate this in Schoology when you submit.)
+A double-linked list data structure keeps track of both the first, and last nodes of the list.
+Every node connects to the node after it (next), and also the node before it(prev)
+The first node, doesn't have a node before it, so its prev value is NULL
+The last node, doesn't have a node after it, so its next value is NULL
+Make a new github repository.
 
-In this lab, we will create our own IntegerLinkedList class from scratch. We will implement it as a Singly Linked List.
+Put a copy of the LIst.java interface, and the IntegerLIst.java interface (and optionally your Test.java class) in the repository.
 
-I have provided a class called Node which includes an int value, and a reference to the next Node.  Please make sure you understand the code in this class as well.
+Make a class called IntegerDoubleLinkedList
 
-Our IntegerLinkedList should have a reference to a head Node as instance data.  If its reference to the head Node is null, we will consider this to be an empty list.  It should also keep track of its own size.
+You might want to start by copying the code out of your IntegerLinkedList class so that you can revise it instead of starting from scratch.  
 
-We should provide
+Some things to keep in mind:
 
-a Constuctor (no parameters)
-as well as the following methods:
+Your Node class needs to have a .prev as well as a .next
+You now have head and tail.  This comes into consideration in a lot of methods, including the Constructors, add, remove, clear, etc.  Just like there are special cases where you have to reset head, there are now special cases where you have to reset tail.  
+Refactor get(index), set(index, item), add(index, item), and remove(index) so that they make a choice of whether to start at the beginning and work forward, or start at the end and work backward, depending upon whether the index is in the first half or the last half of the list.
+Provide a good test method (or class) that
 
-* .add(int x) (adds to the end of the list.)
-* .add(int index, int x) (which inserts at position index, and shifts everything else to the right as necessary.  Should only allow adding to positions 0 through size.  Otherwise, should throw in IndexOutOfBoundsException.
-* .set(int index, int x) (which replaces the element at position index with x.)
-* .clear() (results in .size() returning 0) and .get(0) throwing a new IndexOutOfBoundsException()
-* .remove(int index) (removes the value at position index.  Shifts everything else to the left as necessary)
-* .get(int index) (returns the value at position index, or throws a new IndexOutOfBoundsException)
-* .size() (returns the number of items in the list.)
-* .isEmpty() (returns true if .size() is 0)
-* .contains(int val) (returns true if the List contains the given val, false otherwise)
-* .indexOf(int val) (returns the index of the first instance of val that appears in the List, or -1 if it does not appear)
-* .equals(IntegerLinkedList other) (returns true if this IntegerLinkedList and the other IntegerLinkedList have all of the same elements in the same order.
-* .toString() returns a nice representation of all of the elements in the IntegerLinkedList with commons, and square brackets.
-
+tests each of your methods
+demonstrates that you have thought about and handled appropriate edge cases.
 
 LinkedLists have some disadvantages.  For one thing, you find yourself traversing them linearly frequently.  For example, to get to the end of the list, you might do something like this:
 
