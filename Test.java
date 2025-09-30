@@ -1,7 +1,7 @@
 public class Test {
 
-    public static IntegerLinkedList initializeList(int size) {
-        IntegerLinkedList list = new IntegerLinkedList();
+    public static DoubleLinkedList initializeList(int size) {
+        DoubleLinkedList list = new DoubleLinkedList();
         for (int val = 10; val <= 10 * size; val += 10)
         {
             list.add(val);
@@ -11,7 +11,7 @@ public class Test {
 
     public static void test_add_val()
     {
-        IntegerLinkedList list = new IntegerLinkedList();
+        DoubleLinkedList list = new DoubleLinkedList();
         System.out.println("Test add(val):  add 5 values to list");
         System.out.println("Expected: 10 20 30 40 50 size: 5" );
         for (int val = 10; val <= 50; val +=10)
@@ -35,7 +35,7 @@ public class Test {
     {
         System.out.println("Test get(index):  get all values from the list");
         System.out.println("Expected: 10 20 30 40 50" );
-        IntegerLinkedList list = initializeList(5);
+        DoubleLinkedList list = initializeList(5);
         System.out.print("Output:   ");
         for (int i=0; i < 5; i++ )
         {
@@ -65,7 +65,7 @@ public class Test {
 
     public static void test_add_index_val()
     {
-        IntegerLinkedList list = initializeList(10);
+        DoubleLinkedList list = initializeList(10);
         System.out.println("Test add(index, val): add item to position 0");
         System.out.println("Expected: 1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100  size: 11");
         list.add(0,1);
@@ -109,7 +109,7 @@ public class Test {
 
     public static void test_size()
     {
-        IntegerLinkedList list = new IntegerLinkedList();
+        DoubleLinkedList list = new DoubleLinkedList();
         System.out.println("Test size() on an empty list:  ");
         System.out.println("Expected: [] size: 0");
         System.out.println("Output:  " + list + " size: " + list.size());
@@ -123,7 +123,7 @@ public class Test {
 
     public static void test_clear()
     {
-        IntegerLinkedList list = new IntegerLinkedList();
+        DoubleLinkedList list = new DoubleLinkedList();
         System.out.println("Test clear() on an empty list:  ");
         System.out.println("Expected: [] size: 0");
         System.out.println("Output:  " + list + " size: " + list.size());
@@ -141,7 +141,7 @@ public class Test {
 
     public static void test_set()
     {
-        IntegerLinkedList list = initializeList(10);
+        DoubleLinkedList list = initializeList(10);
         System.out.println("Test set(index, val): set position 0 to a value");
         System.out.println("Expected: 5, 20, 30, 40, 50, 60, 70, 80, 90, 100  size: 10");
         list.set(0,5);
@@ -185,7 +185,7 @@ public class Test {
 
     public static void test_remove()
     {
-        IntegerLinkedList list = initializeList(10);
+        DoubleLinkedList list = initializeList(10);
         System.out.println("Test remove(index): remove item at index 0");
         System.out.println("Expected: 20, 30, 40, 50, 60, 70, 80, 90, 100  size: 9");
         list.remove(0);
@@ -229,7 +229,7 @@ public class Test {
 
     public static void test_isEmpty()
     {
-        IntegerLinkedList list = new IntegerLinkedList();
+        DoubleLinkedList list = new DoubleLinkedList();
         System.out.println("Test isEmpty() on an empty list:  ");
         System.out.println(list + " size: " + list.size());
         System.out.println("Expected: true");
@@ -246,7 +246,7 @@ public class Test {
 
     public static void test_contains()
     {
-        IntegerLinkedList list = new IntegerLinkedList();
+        DoubleLinkedList list = new DoubleLinkedList();
         System.out.println("Test contains() on an empty list:  ");
         System.out.println("Expected: false");
         System.out.println("Output:   " + list.contains(10));
@@ -264,7 +264,7 @@ public class Test {
 
     public static void test_indexOf()
     {
-        IntegerLinkedList list = new IntegerLinkedList();
+        DoubleLinkedList list = new DoubleLinkedList();
         System.out.println("Test indexOf() on an empty list:  ");
         System.out.println("Expected: -1");
         System.out.println("Output:   " + list.indexOf(10));
@@ -286,8 +286,8 @@ public class Test {
 
     public static void test_equals()
     {
-        IntegerLinkedList list = new IntegerLinkedList();
-        IntegerLinkedList list2 = new IntegerLinkedList();
+        DoubleLinkedList list = new DoubleLinkedList();
+        DoubleLinkedList list2 = new DoubleLinkedList();
 
         System.out.println("Test equals() on two EMPTY lists:  ");
         System.out.println("Expected: true");
