@@ -20,55 +20,54 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
     }
     @Override
     public void add(int index, Integer value)
-    {  //complete this method.  If statements are set up for some cases, but you still need to implement
-
-
+    {
+        if (index < 0 || index > size){
+            throw new IndexOutOfBoundsException("Bad index at: " + index);
+        }
         Node<Integer> n = new Node<Integer>(value);
 
         if (index == 0) {
-            n.setNext(head);
-            head = n;
-            //handle case:  we are adding to position 0 of the list
-			//make sure this also handles the case where we are adding to an empty list.  These two cases can be handled by the same code.
-			size++;  //we are tracking size as an instance variable.  Don't forget to update it where you need to.
+            if (isEmpty()) {
+                head = n;
+                tail = n;
+            }
+             else {
+             n.setNext(head);
+             head.setPrev(n);
+             head = n;
+         }
+            size++;
         }
-        if (index == size){
+        else if (index == size){
+            tail.setNext(n);
             n.setPrev(tail);
             tail = n;
             size++;
         }
-        if (0 < index && index < size) {
-             if (index < (size - index)) {
+        else {
+            if (index < (size / 2)) {
                 Node<Integer> current = head;
-                for (int i = 0; i < index - 1 && current != null; i++) {
+                for (int i = 0; i < index - 1; i++) {
                     current = current.getNext();
                 }
                 Node<Integer> second = current.getNext();
-                if (current != null) {
-                    n.setPrev(current);
-                    n.setNext(second);
-                    current.setNext(n);
-                    second.setPrev(n);
+                n.setPrev(current);
+                n.setNext(second);
+                current.setNext(n);
+                second.setPrev(n);
+                size++;
+            } else {
+                Node<Integer> current = tail;
+                for (int i = size - 1; i > index; i--) {
+                    current = current.getPrev();
                 }
-                //write the code to insert into the list.  It will go between the node currently at position index, and after the node at position index-1
-                //make sure this also handles the case where we are adding to the last index of the list (where index == size)  These two cases can be handled by the same code.
-                size++; //we are tracking size as an instance variable.  Don't forget to update it where you need to.
-            } else if (index > (size - index)){
-                 Node<Integer> current = tail;
-                 for (int i = size; i > index + 1 && current != null; i--){
-                     current = current.getPrev();
-                 }
-                 Node<Integer> second = current.getNext();
-
-                 if (current != null){
-                     n.setPrev(current);
-                     n.setNext(second);
-                     current.setNext(n);
-                     second.setPrev(n);
-                 }
-                 size++;
-             }else
-                throw new IndexOutOfBoundsException("index: " + index);
+                Node<Integer> second = current.getPrev();
+                second.setNext(n);
+                n.setPrev(second);
+                n.setNext(current);
+                current.setPrev(n);
+                size++;
+            }
         }
     }
 
@@ -77,21 +76,21 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
         if (index < 0 || index >= size){
             throw new IndexOutOfBoundsException("Index invalid: " + index);
         }
-        if (index < (size - index)) {
-            Node<Integer> current = head;
+
+        Node<Integer> current;
+        if (index < (size / 2)) {
+            current = head;
             for (int i = 0; i < index; i++) {
                 current = current.getNext();
             }
-            current.setValue(val);
         }
-        else if (index > (size - index)){
-            Node<Integer> current = tail;
-            for (int i = size; i > index; i--){
+        else {
+            current = tail;
+            for (int i = size - 1; i > index; i--){
                 current = current.getPrev();
             }
-            current.setValue(val);
         }
-
+        current.setValue(val);
 
 
     }
@@ -106,43 +105,51 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
 
     @Override
     public Integer remove(int index) {
-
-        if (head != null){
-            if (index == 0){
+        if (index < 0 || index >= size){
+            throw new IndexOutOfBoundsException("Bad Index: " + index);
+        }
+            Integer removedValue;
+            if (size == 1){
+                removedValue = head.getValue();
+                head = null;
+                tail = null;
+            }
+            else if (index == 0){
+                removedValue = head.getValue();
                 head = head.getNext();
                 size--;
             }
-            if (index == size){
+            else if (index == size - 1){
+                removedValue = head.getValue();
                 tail = tail.getPrev();
                 size--;
             }
-            if (index < (size - index)){
-                Node<Integer> current = head;
-                for (int i = 0; i < index - 1 && current != null; i++) {
-                    current = current.getNext();
+            else {
+                if (index < (size / 2)){
+                    Node<Integer> prevNode = head;
+                    for (int i = 0; i < index - 1; i++) {
+                        prevNode = prevNode.getNext();
+                    }
+                    Node<Integer> nodeRemove = prevNode.getNext();
+                    removedValue = nodeRemove.getValue();
+                    Node<Integer> afterNode = nodeRemove.getNext();
+                    prevNode.setNext(afterNode);
+                    afterNode.setPrev(prevNode);
                 }
-                if (current != null && current.getNext() != null && index >= 0){
-                    current.setNext(current.getNext().getNext());
-                    size--;
-                } else{
-                    throw new IndexOutOfBoundsException("Index invalid, try again: " + index);
+                else {
+                    Node<Integer> afterNode = tail;
+                    for (int i = size; i > index + 1 && afterNode != null; i--){
+                        afterNode = afterNode.getPrev();
+                    }
+                    Node<Integer> nodeRemove = afterNode.getPrev();
+                    removedValue = nodeRemove.getValue();
+                    Node<Integer> nodeBefore = nodeRemove.getPrev();
+                    nodeBefore.setNext(afterNode);
+                    afterNode.setPrev(nodeBefore);
                 }
             }
-            else if (index > (size - index)){
-                Node<Integer> current = tail;
-                for (int i = size; i > index + 1 && current != null; i--){
-                    current = current.getPrev();
-                }
-                if (current != null && current.getPrev() != null && index >= 0){
-                    current.setPrev(current.getPrev().getPrev());
-                    size--;
-                } else{
-                    throw new IndexOutOfBoundsException("Index invalid, try again: " + index);
-                }
-            }
-        }
-
-        return index;
+        size--;
+        return removedValue;
     }
 
     @Override
@@ -159,7 +166,7 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
         }
         if (index > (size - index)) {
             Node<Integer> current = tail;
-            for (int i = size; i > index; i--) {
+            for (int i = size - 1; i > index; i--) {
                 current = current.getPrev();
             }
             return current.getValue();
@@ -210,7 +217,7 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
     @Override
     public String toString()
     {
-        String finished = "[";
+        String finished = "";
         Node<Integer> current = head;
         while (current != null){
             finished += current.getValue();
@@ -219,7 +226,7 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
             }
             current = current.getNext();
         }
-        return finished + "]";
+        return finished;
     }
 
     public boolean equals(DoubleLinkedList otherList)
