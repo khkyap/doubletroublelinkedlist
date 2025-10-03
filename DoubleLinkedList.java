@@ -9,9 +9,9 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
 
     public DoubleLinkedList()
     {
-       this.head = head;
+       this.head = null;
        this.size = 0;
-       this.tail = tail;
+       this.tail = null;
     }
     @Override
     public void add(Integer value)
@@ -36,13 +36,11 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
              head.setPrev(n);
              head = n;
          }
-            size++;
         }
         else if (index == size){
             tail.setNext(n);
             n.setPrev(tail);
             tail = n;
-            size++;
         }
         else {
             if (index < (size / 2)) {
@@ -55,7 +53,6 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
                 n.setNext(second);
                 current.setNext(n);
                 second.setPrev(n);
-                size++;
             } else {
                 Node<Integer> current = tail;
                 for (int i = size - 1; i > index; i--) {
@@ -66,9 +63,9 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
                 n.setPrev(second);
                 n.setNext(current);
                 current.setPrev(n);
-                size++;
             }
         }
+        size++;
     }
 
     @Override
@@ -117,12 +114,12 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
             else if (index == 0){
                 removedValue = head.getValue();
                 head = head.getNext();
-                size--;
+                head.setPrev(null);
             }
             else if (index == size - 1){
-                removedValue = head.getValue();
+                removedValue = tail.getValue();
                 tail = tail.getPrev();
-                size--;
+                tail.setNext(null);
             }
             else {
                 if (index < (size / 2)){
@@ -137,15 +134,16 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
                     afterNode.setPrev(prevNode);
                 }
                 else {
-                    Node<Integer> afterNode = tail;
-                    for (int i = size; i > index + 1 && afterNode != null; i--){
-                        afterNode = afterNode.getPrev();
+                    Node<Integer> nodeToRemove = tail;
+                    for (int i = size - 1; i > index; i--){
+                        nodeToRemove = nodeToRemove.getPrev();
                     }
-                    Node<Integer> nodeRemove = afterNode.getPrev();
-                    removedValue = nodeRemove.getValue();
-                    Node<Integer> nodeBefore = nodeRemove.getPrev();
-                    nodeBefore.setNext(afterNode);
-                    afterNode.setPrev(nodeBefore);
+
+                    removedValue = nodeToRemove.getValue();
+                    Node<Integer> nodeBefore = nodeToRemove.getPrev();
+                    Node<Integer> nextNode = nodeToRemove.getNext();
+                    nodeBefore.setNext(nextNode);
+                    nextNode.setPrev(nodeBefore);
                 }
             }
         size--;
@@ -157,22 +155,19 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("invalid index: " + index);
         }
-        if (index < (size - index)) {
-            Node<Integer> current = head;
+        Node<Integer> current;
+        if (index < (size / 2)) {
+            current = head;
             for (int i = 0; i < index; i++) {
                 current = current.getNext();
             }
-            return current.getValue();
-        }
-        if (index > (size - index)) {
-            Node<Integer> current = tail;
+        } else {
+            current = tail;
             for (int i = size - 1; i > index; i--) {
                 current = current.getPrev();
             }
-            return current.getValue();
         }
-
-        return -1;
+        return current.getValue();
     }
 
     @Override
@@ -188,13 +183,11 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
 
     @Override
     public boolean contains(Integer val) {
-        int index = 0;
         Node<Integer> current = head;
         while (current != null){
-            if (val.equals(current.getValue())){
+            if (Objects.equals(val, current.getValue())){
                 return true;
             }
-            index++;
             current = current.getNext();
         }
         return false;
@@ -205,7 +198,7 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
         int index = 0;
         Node<Integer> current = head;
         while (current != null){
-            if (val.equals(current.getValue())){
+            if (Objects.equals(val, current.getValue())){
                 return index;
             }
             index++;
@@ -231,17 +224,25 @@ public class DoubleLinkedList implements IntegerList //do not remove implements 
 
     public boolean equals(DoubleLinkedList otherList)
     {
-        int count = 0;
-        Node<Integer> current = head;
-        if (size == otherList.size) {
-            for (int i = 0; i < size; i++) {
-                if ((Objects.equals(current.getValue(), otherList.get(i)))){
-                    count++;
-                }
-                current = current.getNext();
-            }
+        if (otherList == null){
+            return false;
         }
-        return count == size;
+        if (this.size != otherList.size) {
+                return false;
+            }
+            Node<Integer> thisCurrent = this.head;
+            Node<Integer> otherCurrent = otherList.head;
+        while (thisCurrent != null){
+
+            if (!Objects.equals(thisCurrent.getValue(), otherCurrent.getValue())){
+                return false;
+            }
+            thisCurrent = thisCurrent.getNext();
+            otherCurrent = otherCurrent.getNext();
+           
+        }
+
+        return true;
     }
 
     //this method is complete.  It just calls the other equals method.  This method technically implements the method from List
